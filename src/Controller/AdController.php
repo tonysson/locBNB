@@ -46,13 +46,16 @@ class AdController extends AbstractController
                 $manager->persist($image);
 
             }
-            //$manager = $this->getDoctrine()->getManager();
+             
+            // je relie un auteur a une annonce
+            $ad ->setAuthor($this->getUser());
+
             $manager ->persist($ad);
             $manager ->flush();
 
             $this->addFlash(
                 'success',
-                "l'annonce  à bien été enrégistreé!!" 
+                "l'annonce <strong> {$ad->getTitle()}</strong>  à bien été enrégistreé!!" 
             );
 
             return $this->redirectToRoute('ads_show',[

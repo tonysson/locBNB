@@ -58,19 +58,22 @@
 </div>
    </div>
    <div class="col">
-      <div class="row">
-      <div class="col-4">
-      <img src="http://placehold.it/64x64" alt="avatar de toto">
+     {% set a = ad.author %}
+      <div class="row mb-3 align-items-center">
+      <div class="col-3">
+       <a href="{{ path('user_show',{'slug': a.slug })}}">
+        <img src="{{ a.picture }}" alt="avatar de {{ a.fullName }}" class="avatar avatar-medium">
+      </a>
       </div>
        <div class="col">
-        <h3>Toto Gourmand</h3>
-        <span class="badge badge-primary">3annonces
+        <a href="{{ path('user_show',{'slug': a.slug })}}">
+          <h3>{{a.fullName}}</h3>
+        </a>
+        <span class="badge badge-primary">{{ a.ads |length }} annonces
         </span>
        </div>
       </div>
-      <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Praesentium cupiditate iste eaque maiores non ut ducimus at laboriosam sequi sapiente.</p>
-      <p>Nobis laudantium autem, vel maiores nulla, sit dolorem dolorum itaque hic alias accusamus, magnam illo fugiat animi atque cum eum.</p>
-      <p>Illum rem quam laboriosam debitis impedit veniam magnam nisi. Tenetur dignissimos distinctio facere eum cum? Repellat quidem corrupti neque odit!</p>
+      <p>{{ a.description | raw }}</p>
    </div>
 
   
