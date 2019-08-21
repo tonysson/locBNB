@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AdController extends AbstractController
@@ -29,8 +31,8 @@ class AdController extends AbstractController
 
     /**
      * @Route("/ads/new",name="ads_create")
-     * @return Response
-     * 
+     * @IsGranted("ROLE_USER")
+     * @return Response 
      */
 
     public function create(Request $request , ObjectManager $manager )
@@ -69,9 +71,13 @@ class AdController extends AbstractController
     }
 
 
+
+
+
     /**
      * 
      * @Route("/ads/{slug}/edit",name="ads_edit")
+     * @Security("is_granted('ROLE_USER')and user===ad.getAuthor()",message="Vous n'etes pas l'auteur de cette    annonce,Pas de modification possible !")
      * @return Response
      * 
      */
@@ -109,7 +115,7 @@ class AdController extends AbstractController
     }
 
 
-
+    
 
     /**
      * @Route("/ads/{slug}",name="ads_show")
@@ -128,11 +134,30 @@ class AdController extends AbstractController
     }
 
 
-   
 
+    /**
+     * 
+     * @Route("/ads/{slug}/delete",name="ads_delete") 
+     * @Security("is_granted('ROLE_USER') and user===ad.getAuthor()", message="Vous n'etes pas l'auteur de cette    annonce,Pas de suppression possible !")
+     * @param Ad $ad
+     * @param ObjectManager $manager
+     * @return Response
+     * 
+     */
 
+    public function delete(Ad $ad, ObjectManager $manager)
+    {
+        $manager->remove($ad);
+        $manager->flush();
+
+        $this->addFlash(
+            'success',
+            "L'annonce <strong>{$ad->getTitle()}</strong> a bien été supprimée !"
+        );
+
+        return $this->redirectToRoute('ads_index');
+    }
 
     
-
     
 }
