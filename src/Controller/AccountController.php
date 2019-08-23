@@ -177,6 +177,7 @@ class AccountController extends AbstractController
 
 
     /**
+     * Permet d'afficher le profil de l'utilisateur connecté
      * @Route("/account",name="account_index")
      * @IsGranted("ROLE_USER")
      * @return Response
@@ -189,6 +190,16 @@ class AccountController extends AbstractController
 
         ]);
 
+    }
+
+    /**
+     * Permet d'afficher la liste des reservations faites par l'utlisateur
+     *  @Route("/account/bookings/",name="account_bookings")
+     * @return Response
+     */
+
+    public function bookings(){
+        return $this->render('account/bookings.html.twig');
     }
 
 
