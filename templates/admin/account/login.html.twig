@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <title>Connexion à l'administration</title>
+    {% block stylesheets %} {% endblock %}
+</head>
+<body>
+ <div class="container">
+ <div class="row">
+ <div class="col-md-3">&nbsp</div>
+ <div class="col-md-6">
+    <div class="card-bg-light py-3 px-3">
+      <div class="card-header">
+         <h4 class="card-title text-center">
+           <i class="fas fa-lock"></i>
+           Connexion à l'administration
+         </h4>
+      </div>
+      <div class="card-body alert bg-light py-3 px-3">
+       {% if hasError %}
+         <div class="alert alert-warning">
+            <p>Vos idendifiants de connexion sont incorrects !!!</p>
+         </div>
+       {% endif %}
+        <form method="post">
+          <div class="form-group">
+            <label for="_username">Email</label>
+            <input type="text" class="form-control" placeholder="Adresse email" name="_username" value="{{username}}">
+          </div>
+          <div class="form-group">
+            <label for="_password">Mot de pass</label>
+            <input type="password" class="form-control" placeholder="Votre mot de passe.." name="_password">
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-lock-open"></i>
+              Connexion
+            </button>
+            <a href="{{path('homepage')}}" class="btn btn-link"></a>
+            <i class="fas fa-arrow-circle-left"></i>
+            Retour au site
+          </div>
+        </form>
+      </div>
+    </div>
+  </div> 
+  </div> 
+ </div> 
+</body>
+</html>

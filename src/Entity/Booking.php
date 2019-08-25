@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Constraints\GreaterThan;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\BookingRepository")
@@ -36,7 +35,7 @@ class Booking
     /**
      * @ORM\Column(type="datetime")
      * @Assert\Date(message="La date d'arrivée doit etre au bon format !")
-     * @Assert\GreaterThan("today", message="la date d'arrivée doit etre ulterieur à la date d'aujourd'hui !")
+     * @Assert\GreaterThan("today", message="la date d'arrivée doit etre ulterieur à la date d'aujourd'hui !",groups={"front"})
      */
     private $startDate;
 
@@ -66,6 +65,7 @@ class Booking
      * 
      * Callback appelé achaque fois qu'on crée une reservation
      * @ORM\Prepersist
+     * @ORM\PreUpdate
      */
 
      // Si ma date de creation est vide; je creé une nouvelle dateTime a l'instant ou je le fais.

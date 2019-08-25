@@ -1,0 +1,45 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Administration des reservations!{% endblock %}
+
+{% block body %}
+ 
+   <div class="container">
+     <h1 class="my-5">Administration des reservations!</h1>
+     <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr class="table-active">
+                    <th>Id</th>
+                    <th>Date</th>
+                    <th>Visiteur</th>
+                    <th>Annonce</th>
+                    <th>Durée</th>
+                    <th>Montant</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                
+                {% for booking in bookings %}
+                <tr>
+                    <td>{{booking.id}}</td>
+                    <td>{{booking.createdAt | date('d/m/Y H:i')}}</td>
+                    <td><img src="{{booking.booker.picture}}" alt="" class="avatar avatar-micro">{{booking.booker.fullName}}</td>
+                    <td>{{booking.ad.title}}</td>
+                    <td>{{booking.duration}}</td>
+                    <td>{{booking.amount | number_format(2, ',',' ')}}&nbsp€</td>
+                    <td>
+                        <a href="{{ path('admin_booking_edit',{'id' : booking.id}) }}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></a>
+                        <a href="{{ path('admin_booking_delete',{'id' : booking.id}) }}" class="btn btn-danger" onsubmit="return confirm('Etes-vous sur de supprimer ce bien?')"><i class="fas fa-trash"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}   
+            </tbody>
+           
+        </table>
+       </div> 
+   </div>
+
+{% endblock %}

@@ -9,7 +9,7 @@
 {% set author = ad.author %}
 
   <div class="container">
-    <h1>Votre réservation (n°{{booking.id}})</h1>
+    <h1 class="my-5">Votre réservation (n°{{booking.id}})</h1>
 
     {% if app .request.query.get('withAlert')%}
 
@@ -46,9 +46,9 @@
               <dd class="col-md-4">Nombre de nuit</dd>
               <dt class="col-md-8">{{booking.duration}}</dt>
               <dd class="col-md-4">Montant total</dd>
-              <dt class="col-md-8">{{booking.amount}}€</dt>
+              <dt class="col-md-8">{{booking.amount| number_format(2, ',',' ')}}&nbsp€</dt>
               <dd class="col-md-4">Commentaire</dd>
-              <dt class="col-md-8">{{booking.comment}}</dt>
+              <dt class="col-md-8">{{booking.comment | default('Aucun commentaire')}}</dt>
            </dl>
 
            <hr>
@@ -70,8 +70,30 @@
             {{author.description | raw}}
 
             <a href="{{path('user_show',{'slug':author.slug}) }}" class="btn btn-primary">Plus d'infos sur {{ author.firstname}}</a>
+         </div>  
+         <div class="alert alert-light" id="comment">
+            <h2 class="alert-heading">Votre avis Compte !!!</h2>
+            {% if date() > date(booking.endDate) %}
 
-         </div>    
+               {% set comment = booking.ad.getCommentFromAuthor(app.user) %}
+
+              {% if comment is not null %}
+                <blockquote>
+                 {{comment.content}}
+                </blockquote>
+                <strong>Note :</strong> {% include 'partials/rating.html.twig' with {'rating':comment.rating}%}
+              {% else %}
+
+                {{form_start(form)}}
+                {{form_widget(form)}}
+                <button type="submit"class="btn btn-success">Confirmer</button>
+                {{form_end(form)}}
+              {% endif %}  
+              
+            {% else %}
+            <p>Vous pourrez noté cette annonce à la fin de votre séjour!</p>
+            {% endif %}
+         </div>  
       </div>
       <div class="col">
         <div class="alert alert-light">

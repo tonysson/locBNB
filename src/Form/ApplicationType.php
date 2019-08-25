@@ -23,13 +23,13 @@ class ApplicationType extends AbstractType{
      */
 
 
-    // array_merge pour fusionner deux options de type tableaux!!
+    // array_merge_recursive pour fusionner deux options de type tableaux!!
 
     // icije le mets en protected pour que l'heritage soit effectif!!
 
     protected function getConfiguration($label, $placeholder, $options = [])
     {
-        return array_merge([
+        return array_merge_recursive([
             'label' => $label,
             'attr' => [
                 'placeholder' => "$placeholder"

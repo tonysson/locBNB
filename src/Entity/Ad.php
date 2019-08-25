@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
+use App\Entity\User;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -84,10 +85,16 @@ class Ad
      */
     private $bookings;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="ad", orphanRemoval=true)
+     */
+    private $comments;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
         $this->bookings = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     /**
@@ -103,6 +110,42 @@ class Ad
             $slugify = new Slugify();
             $this->slug = $slugify->slugify($this->title);
         }
+    }
+
+    /**
+     * Permet de recuperer un auteur par rapport a une annonce
+     * @param User $author
+     * @return Comment | null
+     */
+
+    public function getCommentFromAuthor(User $author){
+     // On veut rechercher:Est-ce que parmi ts les commentaires qui sont liés à l'annonce j'ai un commentaire dt l'auteur est le mm que celui passé a ma fonction
+     foreach($this->comments as $comment){
+       // si l'auteur du commentaire est egale a mon auteur ds la fction, je retourn le commentaire
+        if($comment->getAuthor() === $author) return $comment;
+     }
+        return null;
+    }
+
+    /**
+     * Permet d'obtenir la moyenne globale des notes pour cette annonce
+     *
+     * @return float
+     */
+    public function getAvgRatings(){
+     // 1) calculer la somme des notations
+     // La fction array_reduce() reduit le tableau des commentaires en une seule valeur
+     // $this->comments c'est un array collection qd on lui pass la fction toArray() il le reduit a 1 veritale tableau; apres je dois lui preciser comment je veux reduire ce tableau en lui passant une fction() qui recoit une variable $total et $comment qui est chaque commentaire recu
+     // En gros je boucle sur le tableau des commentaires que je fournis ds $this->comments et on appele la function a  chaque fois en lui passant un total qui commence a 0 et le commentaire en lui mm:return $total + $comment->getRating(); elle retourne dc le total + la note qui est sur le commentaire: $comment->getRating()
+     $sum = array_reduce($this->comments->toArray(),function($total,$comment){
+         return $total + $comment->getRating();
+     },0);
+      
+     // 2) calculer la moyenne
+     //$moyenne = $sum / count($this->comments): ca c'est la moyenne au cas ou le commentaire existe sinn je suis entrain de diviser un nombre par 0 au cas ou je n'ai pas de commentaire. Pour eviter ca on rajoute: on s'assure que le nombre de commentaire est superieur a 0 count($this->comments)>0
+     if(count($this->comments) > 0) return $sum / count($this->comments);
+
+     return 0;
     }
    
 
@@ -316,6 +359,37 @@ class Ad
             // set the owning side to null (unless already changed)
             if ($booking->getAd() === $this) {
                 $booking->setAd(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setAd($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getAd() === $this) {
+                $comment->setAd(null);
             }
         }
 
