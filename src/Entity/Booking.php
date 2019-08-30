@@ -119,7 +119,7 @@ class Booking
         $notAvailable = array_map($formatDay, $notAvailableDays);
 
         foreach($days as $day){
-            // array_search est une fction qui me permet de chercher une info o sein d'un tableau qui prends comme premier parametre c'est l'information
+            // array_search est une fction qui me permet de chercher une info o sein d'un tableau qui prends comme premier parametre  l'information
             if(array_search($day,$notAvailable) !== false) return false;
         }
         return true;
@@ -127,7 +127,7 @@ class Booking
     }
 
     /**
-     * Permet de recuperer un tableau des journee qui correspondent à ma reservation
+     * Permet de recuperer un tableau des journees qui correspondent à ma reservation
      * @return array un tableau d'objet dateTime representant les jours de la reservation
      */
 

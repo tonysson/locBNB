@@ -1,20 +1,11 @@
 <?php
-
-
 namespace App\Form;
-
-
-
-
 use Symfony\Component\Form\AbstractType;
-
-
-
 
 class ApplicationType extends AbstractType{
 
     /**
-     * permet d'avoir la configuration de base d'un champ
+     * permet d'avoir la configuration de base d'un champ ds tout mon site
      *
      * @param [string] $label
      * @param [string] $placeholder
@@ -25,7 +16,7 @@ class ApplicationType extends AbstractType{
 
     // array_merge_recursive pour fusionner deux options de type tableaux!!
 
-    // icije le mets en protected pour que l'heritage soit effectif!!
+    // ici je le mets en protected pour que l'heritage soit effectif!!
 
     protected function getConfiguration($label, $placeholder, $options = [])
     {

@@ -1,0 +1,143 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Tableau de bord{% endblock %}
+
+{% block body %}
+
+<div class="container">
+  <h1 class="my-5 text-center">Statistique sur le site</h1>
+
+  <div class="row">
+    <div class="col">
+       <div class="card bg-primary text-white mb-3 text-center">
+          <div class="card-body">
+             <div class="row">
+                <div class="col-4">
+                   <i class="fas fa-users fa-3x"></i>
+                </div>
+                <div class="col-8">
+                   <h4 class="card-title">
+                      {{stats.users}} utilisateurs inscrits
+                   </h4>
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+    <div class="col">
+       <div class="card bg-dark text-white mb-3 text-center">
+          <div class="card-body">
+             <div class="row">
+                <div class="col-4">
+                   <i class="fas fa-home fa-3x"></i>
+                </div>
+                <div class="col-8">
+                   <h4 class="card-title">
+                      {{stats.ads}} annonces postées
+                   </h4>
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+    <div class="col">
+       <div class="card bg-warning text-white mb-3 text-center">
+          <div class="card-body">
+             <div class="row">
+                <div class="col-4">
+                   <i class="fas fa-folder fa-3x"></i>
+                </div>
+                <div class="col-8">
+                   <h4 class="card-title">
+                      {{stats.bookings}} réservations
+                   </h4>
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+    <div class="col">
+       <div class="card bg-success text-white mb-3 text-center">
+          <div class="card-body">
+             <div class="row">
+                <div class="col-4">
+                   <i class="fas fa-comments fa-3x"></i>
+                </div>
+                <div class="col-8">
+                   <h4 class="card-title">
+                      {{stats.comments}} avis postés
+                   </h4>
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col">
+      <div class="alert bg-success text-white">
+        <h2 class="alert-heading my-3 text-center"><i class="fas fa-arrow-up"></i>&nbsp Les annonces populaires</h2>
+        <div class="table-responsive ">
+        <table class="table table-bordered table-striped text-white">
+          <thead>
+             <tr>
+                <th>Annonce</th>
+                <th>Proprio</th>
+                <th>Moyenne</th>
+             </tr>
+          </thead>
+          <tbody>
+          {% for ad in bestAds %}
+             <tr>
+                <td>{{ad.title}}</td>
+                <td>
+                  <img src="{{ad.picture}}" alt="" class="avatar avatar-micro">{{ad.firstName}}&nbsp{{ad.lastName}}
+                </td>
+                <td class="text-center">
+                  <span class="badge badge-dark">
+                      {{ad.note | number_format(1, ',',' ')}}
+                  </span>
+                </td>
+             </tr>
+          {% endfor %}
+          </tbody>
+         </table>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+       <div class="alert bg-danger text-white">
+        <h2 class="alert-heading my-3 text-center"><i class="fas fa-arrow-down"></i>&nbsp Les pires annonces</h2>
+        <div class="table-responsive ">
+        <table class="table table-bordered table-striped text-white">
+          <thead>
+             <tr>
+                <th>Annonce</th>
+                <th>Proprio</th>
+                <th>Moyenne</th>
+             </tr>
+          </thead>
+          <tbody>
+          {% for ad in worstAds %}
+             <tr>
+                <td>{{ad.title}}</td>
+                <td>
+                  <img src="{{ad.picture}}" alt="" class="avatar avatar-micro">{{ad.firstName}}&nbsp{{ad.lastName}}
+                </td>
+                <td class="text-center">
+                  <span class="badge badge-dark">
+                      {{ad.note | number_format(1, ',',' ')}}
+                  </span>
+                </td>
+             </tr>
+          {% endfor %}
+          </tbody>
+         </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

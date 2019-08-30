@@ -31,7 +31,7 @@ class Ad
     /**
      * @ORM\Column(type="string", length=255)
      *  @Assert\Length(min=10,max=255,minMessage="Le titre doit faire minimun 10 caractères!",
-     * maxMessage="Le titre doit faire minimun 10 caractères!")
+     * maxMessage="Le titre doit faire maximun 255 caractères!")
      */
     private $title;
 
@@ -161,14 +161,8 @@ class Ad
 
         foreach($this->bookings as $booking){
 
-            //La je vais calculer les jours qui se trouvent entre la date d'arrivée et de depart
-            //$resultat= range(10,20,2): la fction range() de php permet de determiner toutes les etapes qui permettent d'aller
-             //   de 10 à 20 en sautant de 2
-             //  $resulatt = [10,12,14,16,18,20] 
-             // 10 ds mon cas = $booking->getStartDate()->getTimestamp()
-              //  20=$booking->getEndtDate()->getTimestamp()
-              //  2= je calcul 24h sous la forme de seconde
-             //   2=24h*60min*60seconde
+            //La je vais calculer les jours qui se trouvent entre la date d'arrivée et de depart $resultat= range(10,20,2): la fction     range() de php permet de determiner toutes les etapes qui permettent d'aller de 10 à 20 en sautant de $resulatt = [10,12,   14,16,18,20]    10 ds mon cas = $booking->getStartDate()->getTimestamp() 20=$booking->getEndtDate()->getTimestamp() 2= je   calcul 24h sous la forme de seconde 2=24h*60min*60seconde
+              
              $resultat = range(
                  $booking->getStartDate()->getTimestamp(),
                  $booking->getEndDate()->getTimestamp(),
@@ -181,9 +175,8 @@ class Ad
                 return new \dateTime(date('Y-m-d', $dayTimestamp));
             },$resultat);
 
-            //Dans $days j'ai donc la mm chose que $resultat sauf qu'il est en seconde, mais la je l'ai sous forme
-            //de l'ensemble des jours sous la forme de dateTime qui sont entre le jour de depart
-            // et le jour d'arrivee d'une reservation 
+            // Dans $days j'ai donc la mm chose que $resultat sauf qu'il est en seconde, mais la je l'ai sous forme de l'ensemble des      jours sous la forme de dateTime qui sont entre le jour de depart et le jour d'arrivee d'une reservation
+            
 
             $notAvailableDays = array_merge($notAvailableDays, $days);
         }
@@ -193,14 +186,6 @@ class Ad
     }
 
     
-
-
-
-
-
-
-
-
 
     public function getId(): ?int
     {
